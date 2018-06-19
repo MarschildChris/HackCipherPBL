@@ -1,21 +1,32 @@
 import random
 
 #give a string message and return the converted cipherText
-def caesarEncoding(message):
+def caesarEncoding(message,key):
     result = ''
-    password = int(random.random()*24+1)
+    if(key==0):
+        key = int(random.random()*24+1)
     for i in message:
-        if(ord(i)+password<123):
-            result+=chr(ord(i)+password)
+        if(i==' '):
+            result+=' '
+            continue
+        if(ord(i)+key<123):
+            result+=chr(ord(i)+key)
         else:
-            result+=(chr(ord(i)+password-26))
+                result+=(chr(ord(i)+key-26))
     return result
+
+
+
+
 
 #give a cipherText and return the hacked origin massage
 def caesarDecoding(code):
     for i in range(1,25):
         possible = ""
         for c in code:
+            if(c==' '):
+                possible+=' '
+                continue
             if(ord(c)+i<123):
                 possible+=chr(ord(c)+i)
             else:
@@ -54,3 +65,35 @@ def transpositionDecoding(cipherText):
 
         if(input(str(possibleMsg)+'\nIs it make sense?(y/n)').lower()=='y'):
             return str(possibleMsg)+"\nkey="+str(possibleKey)
+
+def vigenereEncoding(msg,key):
+    cipherText = ''
+    spaces = 0
+    for i in range(len(msg)):
+        if(msg[i]==' '):spaces+=1
+        cipherText+=caesarEncoding(msg[i],ord(key[(i-spaces)%len(key)])-97)
+    return cipherText
+
+#def vigenereDecoding(msg):
+
+
+def multiplicationEncoding(msg,key):
+    result = ''
+    for i in msg:
+        if(i!=' '):result += chr((ord(i) - 97) * key % 26 + 97)
+        else: result+=' '
+    return(result)
+
+def multiplicationDecoding(cipherText):
+    possibleKey=3
+    while(possibleKey<26):
+        possible=''
+        for i in cipherText:
+            if(i==' '):continue
+            guess = ord(i)-97
+            while(guess%possibleKey!=0):
+                guess+=26
+            possible+=chr(int(guess/possibleKey+97))
+        print(possible+' key='+str(possibleKey))
+        if(possibleKey==11):possibleKey+=2
+        possibleKey+=2
