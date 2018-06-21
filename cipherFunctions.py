@@ -17,8 +17,6 @@ def caesarEncoding(message,key):
 
 
 
-
-
 #give a cipherText and return the hacked origin massage
 def caesarDecoding(code):
     for i in range(1,25):
@@ -35,6 +33,8 @@ def caesarDecoding(code):
         if(input('Is it make sense(y/n)').lower()=='y'):
             return possible
 
+
+
 def transpositionEncoding(message):
     cipherText = ''
     key = int(random.random()*(len(message)-2))+2
@@ -44,6 +44,8 @@ def transpositionEncoding(message):
             cipherText += message[j]
             j+=key
     return cipherText
+
+
 
 def transpositionDecoding(cipherText):
     for possibleKey in range(2,len(cipherText)):
@@ -97,3 +99,10 @@ def multiplicationDecoding(cipherText):
         print(possible+' key='+str(possibleKey))
         if(possibleKey==11):possibleKey+=2
         possibleKey+=2
+
+
+def affineEncoding(msg,keyA,keyB):
+    cipherText = ''
+    for i in msg:
+        cipherText+=chr(((ord(i)-97)*keyA+keyB)%26+97)
+    return cipherText
